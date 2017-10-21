@@ -17,7 +17,7 @@ Movie type;
 int screenSelector;
 int randomPlayerNum;
 String[] intro = { "Hello everyone, it's me. Crystal Clear ASMR.", "Hi. I'm Soft ASMR. How was your day? I hope it was well.", "Hey there. It's Triple ASMR. Aesthetic. Abstract. ASMR.", "Heyo, it's Radical ASMR and I'm here to help you tingle.", "Dreamy ASMR here. It's time for another video." };
-String[] outro = { "Thank you so much for watching. I hope you have a crystal clear day.", "I hope you enjoyed the video. Have a fabulous video.", "Thank you for watching. Triple ASMR out.", "I hope you tingled. Have a wonderful day... or night.", "Dreamy ASMR has to go now, but I hope you have a wonderful time today. Much love." };
+String[] outro = { "Thank you so much for watching. I hope you have a crystal clear day.", "I hope you enjoyed the video. Have a fabulous day.", "Thank you for watching. Triple ASMR out.", "I hope you tingled. Have a wonderful day... or night.", "Dreamy ASMR has to go now, but I hope you have a wonderful time today. Much love." };
 String[] visual = { "Hand Movements", "Tapping", "Page Turning", "Typing" };
 String[] whisper = { "hello, hello, hello, hello", "ska, ska, ska, ska", "cha, cha, cha, cha", "rad, rad, rad, rad, radical", "shhh, shhh, shhh, shhh" };
 float red;
@@ -303,7 +303,7 @@ void pageTurnScreen() {
   textFont(infoFont);
   textAlign(LEFT);
   fill(0);
-  text(visual[1], 45, 160, width-90, height-500);
+  text(visual[2], 45, 160, width-90, height-500);
   text("Flip through the pages of a book so it sounds like a pattern.", 45, 500, width-90, height-500);
   
   if((mouseX > width-1280) && (mouseY > height-350) && (mouseX < width-80) && (mouseY < height-50) && (screenSelector == 6)) {
@@ -336,7 +336,7 @@ void typingScreen() {
   textFont(infoFont);
   textAlign(LEFT);
   fill(0);
-  text(visual[1], 45, 160, width-90, height-500);
+  text(visual[3], 45, 160, width-90, height-500);
   text("Type this exact sentence on your keyboard.", 45, 500, width-90, height-500);
   
   if((mouseX > width-1280) && (mouseY > height-350) && (mouseX < width-80) && (mouseY < height-50) && (screenSelector == 7)) {
