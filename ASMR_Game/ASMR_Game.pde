@@ -178,28 +178,30 @@ void introScreen() {
     text("Pick visuals", width-245, height-150);
   }
   
-  stroke(0);
+  stroke(255, 193, 218);
   strokeWeight(2);
   for(int i = 0; i < in.bufferSize() - 1; i++)
   {
+    float x1 = map( i, 0, in.bufferSize(), 0, width );
+    float x2 = map( i+1, 0, in.bufferSize(), 0, width );
     line(i, height-600 + in.left.get(i)*50, i+5, height-600 + in.left.get(i+1)*50);
-    line(i, height-500 + in.right.get(i)*50, i+5, height-500 + in.right.get(i+1)*50);
+    //line(i, height-500 + in.right.get(i)*50, i+5, height-500 + in.right.get(i+1)*50);
   }
   
+  fill(0, 0, 0, 75);
+  rect(0, height-650, in.left.level()*width, 100 );
+  //rect(0, height-550, in.right.level()*width, 100 );
+  
+  stroke(2);
   line(0, height-600, width, height-600);
-  line(0, height-500, width, height-500);
-  
-  textFont(recordFont);
-  textAlign(LEFT);
-  fill(0);
-  
-  if (introRecorder.isRecording()) {
-    text("Currently recording... Press R again to stop recording. Then press S to save your recording.", 25, height-700);
-    println("i'm recording");
-  }
-  else {
-    text("Press R to record.", 25, height-700);
-}
+  //line(0, height-500, width, height-500);
+    
+  //if (!introRecorder.isRecording()) {
+  //  textFont(recordFont);
+  //  textAlign(LEFT);
+  //  fill(0);
+  //  text("Press R to record.", 25, height-700);
+  //}
 }
 
 void visualScreen() {
@@ -539,6 +541,10 @@ void mouseReleased() {
     if ((introRecorder.isRecording()) &&  (in.isMonitoring())) {
       introRecorder.endRecord();
       in.disableMonitoring();
+      textFont(recordFont);
+      textAlign(LEFT);
+      fill(0);
+      text("Currently recording... Press R again to stop recording. Then press S to save your recording.", 25, height-700);
     } else {
       introRecorder.beginRecord();
       in.enableMonitoring();
