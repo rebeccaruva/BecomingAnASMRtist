@@ -30,7 +30,7 @@ void setup() {
   fullScreen();
   background(0);
   
-  screenSelector = 9; //set screen to 0 at setup
+  screenSelector = 0; //set screen to 0 at setup
   randomPlayerNum = int(random(5)); //random number for array to find ASMR persona
   
   //load fonts, images, etc..
