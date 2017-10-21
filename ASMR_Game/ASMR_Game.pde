@@ -9,6 +9,7 @@ import ddf.minim.ugens.*;
 
 PFont titleFont;
 PFont infoFont;
+PFont recordFont;
 PImage stroke;
 Movie hand;
 Movie tap;
@@ -24,18 +25,22 @@ float red;
 float green;
 float blue;
 color titleColor;
+Minim minim;
+AudioInput in;
+AudioRecorder introRecorder;
 
 void setup() {
   //size(1000, 1000);
   fullScreen();
   background(0);
   
-  screenSelector = 0; //set screen to 0 at setup
+  screenSelector = 2; //set screen to 0 at setup
   randomPlayerNum = int(random(5)); //random number for array to find ASMR persona
   
   //load fonts, images, etc..
   titleFont = createFont("LeviReBrushed.ttf", 350);
   infoFont = createFont("GOTHIC.TTF", 150);
+  recordFont = createFont("GOTHIC.TTF", 75);
   stroke = loadImage("brushStroke.png");
   hand  = new Movie(this, "hands.mp4");
   hand.loop();
@@ -49,6 +54,11 @@ void setup() {
   type  = new Movie(this, "typing.mp4");
   type.loop();
   type.volume(0);
+  
+  minim = new Minim(this);
+
+  in = minim.getLineIn();
+  introRecorder = minim.createRecorder(in, "introrecording.wav"); //record the intro
 }
 
 void draw() {
@@ -167,6 +177,29 @@ void introScreen() {
     fill(0);
     text("Pick visuals", width-245, height-150);
   }
+  
+  stroke(0);
+  strokeWeight(2);
+  for(int i = 0; i < in.bufferSize() - 1; i++)
+  {
+    line(i, height-600 + in.left.get(i)*50, i+5, height-600 + in.left.get(i+1)*50);
+    line(i, height-500 + in.right.get(i)*50, i+5, height-500 + in.right.get(i+1)*50);
+  }
+  
+  line(0, height-600, width, height-600);
+  line(0, height-500, width, height-500);
+  
+  textFont(recordFont);
+  textAlign(LEFT);
+  fill(0);
+  
+  if (introRecorder.isRecording()) {
+    text("Currently recording... Press R again to stop recording. Then press S to save your recording.", 25, height-700);
+    println("i'm recording");
+  }
+  else {
+    text("Press R to record.", 25, height-700);
+}
 }
 
 void visualScreen() {
@@ -439,7 +472,6 @@ void videoScreen() {
   textAlign(CENTER);
   fill(255);
   text("*ASMR*", 45, 175, width, height);
-  
 }
 
 void generatePastelColor() {
@@ -501,5 +533,29 @@ void mouseReleased() {
     screenSelector = 9;
   } else if((mouseX > width-1500) && (mouseY > height-350) && (mouseX < width) && (mouseY < height-50) && (screenSelector == 9) && ( mousePressed)) {
     screenSelector = 10;
+  }
+  
+  if ((key == 'r' || key == 'R') && (screenSelector == 2)) {
+    if ((introRecorder.isRecording()) &&  (in.isMonitoring())) {
+      introRecorder.endRecord();
+      in.disableMonitoring();
+    } else {
+      introRecorder.beginRecord();
+      in.enableMonitoring();
+    }
+  }
+  if ((key == 's' || key == 'S') && (screenSelector == 2)) {
+    introRecorder.save();
+    println("Done saving.");
+  }
+}
+
+void keyPressed() {
+  if (key == 'r' || key == 'R') {
+    if (in.isMonitoring()) {
+      in.disableMonitoring();
+    } else {
+      in.enableMonitoring();
+    }
   }
 }
