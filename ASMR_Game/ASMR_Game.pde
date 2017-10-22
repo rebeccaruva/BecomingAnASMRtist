@@ -278,6 +278,7 @@ void introScreen() {
     intro2.volume(0);
     intro3.volume(0);
     intro4.volume(0);
+    }
   }
 }
 
