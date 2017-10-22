@@ -17,10 +17,15 @@ Movie intro1;
 Movie intro2;
 Movie intro3;
 Movie intro4;
+Movie outro1;
+Movie outro2;
+Movie outro3;
+Movie outro4;
 Movie hand;
 Movie tap;
 Movie page;
 Movie type;
+Movie asmr;
 Capture user;
 int screenSelector;
 int randomPlayerNum;
@@ -47,7 +52,7 @@ void setup() {
   background(0);
   frameRate(60);
   
-  screenSelector = 4; //set screen to 0 at setup
+  screenSelector = 0; //set screen to 0 at setup
   randomPlayerNum = int(random(5)); //random number for array to find ASMR persona
   
   //load fonts, images, etc..
@@ -69,6 +74,21 @@ void setup() {
   intro4 = new Movie(this, "intro4.mp4");
   intro4.loop();
   intro4.volume(0);
+  outro1 = new Movie(this, "outro1.mp4");
+  outro1.loop();
+  outro1.volume(0);
+  outro2 = new Movie(this, "outro2.mp4");
+  outro2.loop();
+  outro2.volume(0);
+  outro3 = new Movie(this, "outro3.mp4");
+  outro3.loop();
+  outro3.volume(0);
+  outro4 = new Movie(this, "outro4.mp4");
+  outro4.loop();
+  outro4.volume(0);
+  asmr = new Movie(this, "asmr.mp4");
+  //asmr.loop();
+  //asmr.volume(0);
   hand  = new Movie(this, "hands.mp4");
   hand.loop();
   hand.volume(0);
@@ -142,23 +162,14 @@ void draw() {
     introScreen();
   } else if (screenSelector == 3) {
     visualScreen();
-  }// else if (screenSelector == 4) {
-  //  handsScreen();
-  //} else if (screenSelector == 5) {
-  //  tappingScreen();
-  //} else if (screenSelector == 6) {
-  //  pageTurnScreen();
-  //} else if (screenSelector == 7) {
-  //  typingScreen();
-  //}
-  else if (screenSelector == 4) {
+  } else if (screenSelector == 4) {
     contentScreen();
   } else if (screenSelector == 8) {
     outroScreen();
   } else if (screenSelector == 9) {
-    scoreScreen();
-  } else if (screenSelector == 10) {
     videoScreen();
+  } else if (screenSelector == 10) {
+    scoreScreen();
   }
 }
 
@@ -211,10 +222,16 @@ void introScreen() {
   //text("Say \"" + intro[randomPlayerNum] + "\"", 45, 500, width-90, height-500);
   
    //videos
+   if (screenSelector == 2) {
   image(intro1, 500, 750, 960, 540);
   image(intro2, width-1460, 750, 960, 540);
   image(intro3, 500, 1490, 960, 540);
   image(intro4, width-1460, 1490, 960, 540);
+   } else {
+     intro1.volume(0);
+     intro2.volume(0);
+     intro3.volume(0);
+     intro4.volume(0);
   
   if ((mouseX > 500) && (mouseY > 750) && (mouseX < 1460) && (mouseY < 1290) && (screenSelector == 2)) {
     fill(255, 255, 255, 75);
@@ -262,25 +279,6 @@ void introScreen() {
     intro3.volume(0);
     intro4.volume(0);
   }
-  
-  //if((mouseX > width-1100) && (mouseY > height-350) && (mouseX < width-100) && (mouseY < height-50) && (screenSelector == 2)) {
-  //  tint(100, 209, 239);
-  //  image(stroke, width-1100, height-350, 1000, 300);
-  //  textFont(infoFont);
-  //  textAlign(RIGHT);
-  //  fill(0);
-  //  text("Pick visuals", width-245, height-150);
-    
-  //  //if mouse is pressed, go to next page
-  //  mouseReleased();
-  //} else {
-  //  noTint();
-  //  image(stroke, width-1100, height-350, 1000, 300);
-  //  textFont(infoFont);
-  //  textAlign(RIGHT);
-  //  fill(0);
-  //  text("Pick visuals", width-245, height-150);
-  //}
 }
 
 void visualScreen() {
@@ -297,10 +295,17 @@ void visualScreen() {
   text("What kind of video would you like to make?", 45, 500, width-90, height-500);
   
   //videos
+  if (screenSelector == 3) {
   image(hand, 500, 750, 960, 540);
   image(tap, width-1460, 750, 960, 540);
   image(page, 500, 1490, 960, 540);
   image(type, width-1460, 1490, 960, 540);
+  } else {
+    hand.volume(0);
+    tap.volume(0);
+    page.volume(0);
+    type.volume(0);
+  }
   
   if ((mouseX > 500) && (mouseY > 750) && (mouseX < 1460) && (mouseY < 1290) && (screenSelector == 3)) {
     fill(255, 255, 255, 75);
@@ -361,161 +366,94 @@ void contentScreen() {
   textAlign(LEFT);
   fill(0);
   text("Hear the sounds", 45, 160, width-90, height-500);
-  text("Do you know what they are?", 45, 500, width-90, height-500);
+  text("Do you get the tingles?", 45, 500, width-90, height-500);
   
   //play buttons
+  textFont(recordFont);
+  textAlign(LEFT);
+  fill(255, 193, 218);
+  
+  image(play, 500, 850, 200, 200);
+  text("Kinetic Sand", 700, 900);
   image(play, width-1300, 850, 200, 200);
+  text("Water Cup", width-1100, 900);
   image(play, 500, 1300, 200, 200);
+  text("Mermaid Pillow", 750, 1400);
   image(play, width-1300, 1300, 200, 200);
+  text("Marshmallow Eating", width-1050, 1400);
   image(play, width/2-350, 1800, 200, 200);
+  text("Spray Bottle", width/2-100, 1900);
   
   if ((mouseX > 500) && (mouseY > 850) && (mouseX < 700) && (mouseY < 1050) && (screenSelector == 4) && (mousePressed)) {
-    image(play, 500, 850, 200, 200);
+    if (sound1.isPlaying()) {
+      sound1.pause();
+    } else {
+      // simply call loop again to resume playing from where it was paused
+      image(play, 500, 850, 200, 200);  
+      sound1.rewind();
+      sound1.play();
+    }
+  }
+  if ((mouseX > width-1300) && (mouseY > 850) && (mouseX < width-1100) && (mouseY < 1050) && (screenSelector == 4) && (mousePressed)) {
+    if (sound2.isPlaying()) {
+      sound2.pause();
+    } else {
+      // simply call loop again to resume playing from where it was paused
+      image(play, width-1300, 850, 200, 200);
+      sound2.rewind();
+      sound2.play();
+    }
+  }
+  if ((mouseX > 500) && (mouseY > 1300) && (mouseX < 700) && (mouseY < 1500) && (screenSelector == 4) && (mousePressed)) {
+    if (sound3.isPlaying()) {
+      sound3.pause();
+    } else {
+      // simply call loop again to resume playing from where it was paused
+      image(play, 500, 1300, 200, 200); 
+      sound3.rewind();
+      sound3.play();
+    }
+  }
+  if ((mouseX > width-1300) && (mouseY > 1300) && (mouseX < width-1100) && (mouseY < 1500) && (screenSelector == 4) && (mousePressed)) {
+    if (sound4.isPlaying()) {
+      sound4.pause();
+    } else {
+      // simply call loop again to resume playing from where it was paused
+      image(play, width-1300, 1300, 200, 200);
+      sound4.rewind();
+      sound4.play();
+    }
+  }
+  if ((mouseX > width/2-350) && (mouseY > 1800) && (mouseX < width/2-150) && (mouseY < 2000) && (screenSelector == 4) && (mousePressed)) {
+    if (sound5.isPlaying()) {
+      sound5.pause();
+    } else {
+      // simply call loop again to resume playing from where it was paused
+      image(play, width/2-350, 1800, 200, 200);
+      sound5.rewind();
+      sound5.play();
+    }
+  }
+  if((mouseX > width-1100) && (mouseY > height-350) && (mouseX < width-100) && (mouseY < height-50) && (screenSelector == 4)) {
+    tint(100, 209, 239);
+    image(stroke, width-1100, height-350, 1000, 300);
+    textFont(infoFont);
+    textAlign(RIGHT);
+    fill(0);
+    text("the ending", width-245, height-150);
+    
+    //if mouse is pressed, go to next page
     mouseReleased();
   } else {
-    image(play0, 500, 850, 200, 200);  
+    noTint();
+    image(stroke, width-1100, height-350, 1000, 300);
+    textFont(infoFont);
+    textAlign(RIGHT);
+    fill(0);
+    text("the ending", width-245, height-150);
   }
+  
 }
-
-//void handsScreen() {
-//  background(255);
-  
-//  hand.volume(0);
-  
-//  generateDarkPastelStroke();
-//  fill(255, 193, 218);
-//  rect(0, 100, width, 300); 
-  
-//  textFont(infoFont);
-//  textAlign(LEFT);
-//  fill(0);
-//  text(visual[0], 45, 160, width-90, height-500);
-//  text("Whisper \"" + whisper[randomPlayerNum] + "\"", 45, 500, width-90, height-500);
-  
-//  if((mouseX > width-1280) && (mouseY > height-350) && (mouseX < width-80) && (mouseY < height-50) && (screenSelector == 4)) {
-//    tint(100, 209, 239);
-//    image(stroke, width-1280, height-350, 1200, 300);
-//    textFont(infoFont);
-//    textAlign(RIGHT);
-//    fill(0);
-//    text("Record outro", width-245, height-150);
-    
-//    //if mouse is pressed, go to next page
-//    mouseReleased();
-//  } else {
-//    noTint();
-//    image(stroke, width-1280, height-350, 1200, 300);
-//    textFont(infoFont);
-//    textAlign(RIGHT);
-//    fill(0);
-//    text("Record outro", width-245, height-150);
-//  }
-//}
-
-//void tappingScreen() {
-//  background(255);
-  
-//  tap.volume(0);
-  
-//  generateDarkPastelStroke();
-//  fill(255, 193, 218);
-//  rect(0, 100, width, 300); 
-  
-//  textFont(infoFont);
-//  textAlign(LEFT);
-//  fill(0);
-//  text(visual[1], 45, 160, width-90, height-500);
-//  text("Tap with your nails on whatever object you would like.", 45, 500, width-90, height-500);
-  
-//  if((mouseX > width-1280) && (mouseY > height-350) && (mouseX < width-80) && (mouseY < height-50) && (screenSelector == 5)) {
-//    tint(100, 209, 239);
-//    image(stroke, width-1280, height-350, 1200, 300);
-//    textFont(infoFont);
-//    textAlign(RIGHT);
-//    fill(0);
-//    text("Record outro", width-245, height-150);
-    
-//    //if mouse is pressed, go to next page
-//    mouseReleased();
-//  } else {
-//    noTint();
-//    image(stroke, width-1280, height-350, 1200, 300);
-//    textFont(infoFont);
-//    textAlign(RIGHT);
-//    fill(0);
-//    text("Record outro", width-245, height-150);
-//  }
-//}
-
-//void pageTurnScreen() {
-//  background(255);
-  
-//  page.volume(0);
-  
-//  generateDarkPastelStroke();
-//  fill(255, 193, 218);
-//  rect(0, 100, width, 300); 
-  
-//  textFont(infoFont);
-//  textAlign(LEFT);
-//  fill(0);
-//  text(visual[2], 45, 160, width-90, height-500);
-//  text("Flip through the pages of a book so it sounds like a pattern.", 45, 500, width-90, height-500);
-  
-//  if((mouseX > width-1280) && (mouseY > height-350) && (mouseX < width-80) && (mouseY < height-50) && (screenSelector == 6)) {
-//    tint(100, 209, 239);
-//    image(stroke, width-1280, height-350, 1200, 300);
-//    textFont(infoFont);
-//    textAlign(RIGHT);
-//    fill(0);
-//    text("Record outro", width-245, height-150);
-    
-//    //if mouse is pressed, go to next page
-//    mouseReleased();
-//  } else {
-//    noTint();
-//    image(stroke, width-1280, height-350, 1200, 300);
-//    textFont(infoFont);
-//    textAlign(RIGHT);
-//    fill(0);
-//    text("Record outro", width-245, height-150);
-//  }
-//}
-
-//void typingScreen() {
-//  background(255);
-  
-//  type.volume(0);
-  
-//  generateDarkPastelStroke();
-//  fill(255, 193, 218);
-//  rect(0, 100, width, 300); 
-  
-//  textFont(infoFont);
-//  textAlign(LEFT);
-//  fill(0);
-//  text(visual[3], 45, 160, width-90, height-500);
-//  text("Type this exact sentence on your keyboard.", 45, 500, width-90, height-500);
-  
-//  if((mouseX > width-1280) && (mouseY > height-350) && (mouseX < width-80) && (mouseY < height-50) && (screenSelector == 7)) {
-//    tint(100, 209, 239);
-//    image(stroke, width-1280, height-350, 1200, 300);
-//    textFont(infoFont);
-//    textAlign(RIGHT);
-//    fill(0);
-//    text("Record outro", width-245, height-150);
-    
-//    //if mouse is pressed, go to next page
-//    mouseReleased();
-//  } else {
-//    noTint();
-//    image(stroke, width-1280, height-350, 1200, 300);
-//    textFont(infoFont);
-//    textAlign(RIGHT);
-//    fill(0);
-//    text("Record outro", width-245, height-150);
-//  }
-//}
 
 void outroScreen() {
   background(255);
@@ -528,26 +466,71 @@ void outroScreen() {
   textAlign(LEFT);
   fill(0);
   text("End with an outro.", 45, 160, width-90, height-500);
-  text("Say \"" + outro[randomPlayerNum] + "\"", 45, 500, width-90, height-500);
+  text("Say goodbye and farewell.", 45, 500, width-90, height-500);
   
-  if((mouseX > width-1500) && (mouseY > height-350) && (mouseX < width) && (mouseY < height-50) && (screenSelector == 8)) {
-    tint(100, 209, 239);
-    image(stroke, width-1500, height-350, 1500, 300);
+   //videos
+   if (screenSelector == 8){
+     image(outro1, 500, 750, 960, 540);
+     image(outro2, width-1460, 750, 960, 540);
+     image(outro3, 500, 1490, 960, 540);
+     image(outro4, width-1460, 1490, 960, 540);
+   } else {
+    outro1.volume(0);
+    outro2.volume(0);
+    outro3.volume(0);
+    outro4.volume(0);
+   }
+  
+  if ((mouseX > 500) && (mouseY > 750) && (mouseX < 1460) && (mouseY < 1290) && (screenSelector == 8)) {
+    fill(255, 255, 255, 75);
+    rect(500, 750, 960, 540);
     textFont(infoFont);
-    textAlign(RIGHT);
-    fill(0);
-    text("See your results", width-245, height-150);
+    textAlign(CENTER);
+    fill(255);
+    text("Stay in the vortex", 500, 800, 975, 540);
+    outro1.volume(0.85f);
     
-    //if mouse is pressed, go to next page
+    mouseReleased();
+  } else if ((mouseX > width-1460) && (mouseY > 750) && (mouseX < width-500) && (mouseY < 1290) && (screenSelector == 8)) {
+    fill(255, 255, 255, 75);
+    rect(width-1460, 750, 960, 540);
+    textFont(infoFont);
+    textAlign(CENTER);
+    fill(255);
+    text("Kind", width-1460, 1010, 960, 540);
+    outro2.volume(0.85f);
+    
+    mouseReleased();
+  } else if ((mouseX > 500) && (mouseY > 1490) && (mouseX < 1460) && (mouseY < 2000) && (screenSelector == 8)) {
+    fill(255, 255, 255, 75);
+    rect(500, 1490, 960, 540);
+    textFont(infoFont);
+    textAlign(CENTER);
+    fill(255);
+    text("love the subs", 500, 1525, 900, 540);
+    outro3.volume(0.85f);
+    
+    mouseReleased();
+  } else if ((mouseX > width-1460) && (mouseY > 1490) && (mouseX < width-500) && (mouseY < 2000) && (screenSelector == 8)) {
+    fill(255, 255, 255, 75);
+    rect(width-1460, 1490, 960, 540);
+    textFont(infoFont);
+    textAlign(CENTER);
+    fill(255);
+    text("Roleplay", width-1460, 1600, 900, 540);
+    outro4.volume(0.85f);
+    
     mouseReleased();
   } else {
-    noTint();
-    image(stroke, width-1500, height-350, 1500, 300);
-    textFont(infoFont);
-    textAlign(RIGHT);
-    fill(0);
-    text("See your results", width-245, height-150);
+    outro1.volume(0);
+    outro2.volume(0);
+    outro3.volume(0);
+    outro4.volume(0);
   }
+}
+
+void videoScreen() {
+  background(0);
   
   stroke(255, 193, 218);
   strokeWeight(2);
@@ -558,59 +541,16 @@ void outroScreen() {
     //line(i, height-600 + in6.left.get(i)*50, i+5, height-600 + in6.left.get(i+1)*50);
     float x1 = map( i, 0, in.bufferSize(), 0, width );
     float x2 = map( i+1, 0, in.bufferSize(), 0, width );
-    line(x1, height-600 + in.left.get(i)*50, x2, height-600 + in.left.get(i+1)*50);
+    line(x1, height-300 + in.left.get(i)*50, x2, height-300 + in.left.get(i+1)*50);
   }
   
-  fill(0, 0, 0, 75);
-  rect(0, height-650, in.left.level()*width, 100 );
-  
-  stroke(2);
-  line(0, height-600, width, height-600);
+  fill(255, 255, 255, 75);
+  rect(0, height-350, in.left.level()*width, 100 );
     
-    textFont(recordFont);
-    textAlign(LEFT);
-    fill(0);
-    text("Press R to record. Once you are done recording, press R to stop. Then press S to save.", 25, height-700);
-}
-
-void scoreScreen() {
-  background(0);
-  
-  generatePastelStroke();
-  fill(255, 193, 218);
-  rect(0, 150, width, 400); 
-  
-  textFont(titleFont);
-  textAlign(CENTER);
+  textFont(recordFont);
+  textAlign(LEFT);
   fill(255);
-  text("Your video is complete.", 45, 160, width-90, height-500);
-  textFont(infoFont);
-  textAlign(CENTER);
-  fill(255);
-  text("Score:", 50, 900, width-90, height-500);
-  
-  if((mouseX > width-1500) && (mouseY > height-350) && (mouseX < width) && (mouseY < height-50) && (screenSelector == 9)) {
-    tint(100, 209, 239);
-    image(stroke, width-1500, height-350, 1500, 300);
-    textFont(infoFont);
-    textAlign(RIGHT);
-    fill(0);
-    text("First ASMR Video", width-215, height-150);
-    
-    //if mouse is pressed, go to next page
-    mouseReleased();
-  } else {
-    noTint();
-    image(stroke, width-1500, height-350, 1500, 300);
-    textFont(infoFont);
-    textAlign(RIGHT);
-    fill(0);
-    text("First ASMR Video", width-215, height-150);
-  }
-}
-
-void videoScreen() {
-  background(0);
+  text("Press R to record. Once you are done recording, press R to stop. Then press S to save.", 25, height-400);
   
   generatePastelStroke();
   fill(255, 193, 218);
@@ -625,10 +565,54 @@ void videoScreen() {
   if (user.available() == true) {
     user.read();
   }
-  image(user, width/2-640, height/2, 1280, 720);
+  image(user, width/2-640, height/2-300, 1280, 720);
   // The following does the same, and is faster when just drawing the image
   // without any additional resizing, transformations, or tint.
   //set(0, 0, cam);
+  
+  if((mouseX > 0) && (mouseY > 45) && (mouseX < width) && (mouseY < 220) && (screenSelector == 9)) {
+      generatePastelStroke();
+          tint(100, 209, 239);
+    fill(255, 193, 218);
+    rect(0, 150, width, 400);
+    textFont(titleFont);
+    textAlign(CENTER);
+    fill(0);
+    text("*ASMR*", 45, 175, width, height);
+    
+    //if mouse is pressed, go to next page
+    mouseReleased();
+  } else {
+      generatePastelStroke();
+    fill(255, 193, 218);
+    rect(0, 150, width, 400);
+   noTint();
+    textFont(titleFont);
+    textAlign(CENTER);
+    fill(255);
+    text("*ASMR*", 45, 175, width, height);
+  }
+}
+
+void scoreScreen() {
+  background(0);
+  
+  generatePastelStroke();
+  fill(255, 193, 218);
+  rect(0, 150, width, 400); 
+  
+  textFont(titleFont);
+  textAlign(CENTER);
+  fill(255);
+  text("Your video is complete...", 45, 160, width-90, height-500);
+  textFont(infoFont);
+  textAlign(CENTER);
+  fill(255);
+  text("Congrats, you are a brand new ASMRtist!", 50, 900, width-90, height-500);
+  textFont(recordFont);
+  textAlign(RIGHT);
+  fill(255, 193, 218);
+  text("Press Esc to leave.", width-500, height-50);
 }
 
 void generatePastelColor() {
@@ -672,6 +656,7 @@ void movieEvent(Movie m) {
 void mouseReleased() {
   if ((mouseX > width/2-300) && (mouseY > height-450) && (mouseX < width/2+300) && (mouseY < height-150) && (screenSelector == 0) && (mousePressed)) {
     screenSelector = 1;
+    asmr.play();
   } else if ((mouseX > width-1100) && (mouseY > height-350) && (mouseX < width-100) && (mouseY < height-50) && (screenSelector == 1) && (mousePressed)) {
     screenSelector = 2;
   }  else if ((mouseX > 500) && (mouseY > 750) && (mouseX < 1460) && (mouseY < 1290) && (screenSelector == 2) && (mousePressed)) {
@@ -684,29 +669,22 @@ void mouseReleased() {
     screenSelector = 3;
   } else if ((mouseX > 500) && (mouseY > 750) && (mouseX < 1460) && (mouseY < 1290) && (screenSelector == 3) && (mousePressed)) {
     screenSelector = 4;
-  } else if ((mouseX > width-1460) && (mouseY > 750) && (mouseX < width-500) && (mouseY < 1290) && (screenSelector == 3) && (mousePressed)) {
-    screenSelector = 5;
-  } else if ((mouseX > 500) && (mouseY > 1490) && (mouseX < 1460) && (mouseY < 2000) && (screenSelector == 3) && (mousePressed)) {
-    screenSelector = 6;
-  } else if ((mouseX > width-1460) && (mouseY > 1490) && (mouseX < width-500) && (mouseY < 2000) && (screenSelector == 3) && (mousePressed)) {
-    screenSelector = 7;
-  } else if(((mouseX > width-1280) && (mouseY > height-350) && (mouseX < width-80) && (mouseY < height-50) && (mousePressed)) && ((screenSelector == 4) || (screenSelector == 5) || (screenSelector == 6) || (screenSelector ==7))) {
-    screenSelector = 8;
-  } else if((mouseX > width-1500) && (mouseY > height-350) && (mouseX < width) && (mouseY < height-50) && (screenSelector == 8) && (mousePressed)) {
-    screenSelector = 9;
-  } else if((mouseX > width-1500) && (mouseY > height-350) && (mouseX < width) && (mouseY < height-50) && (screenSelector == 9) && ( mousePressed)) {
+  }// else if((mouseX > width-1500) && (mouseY > height-350) && (mouseX < width) && (mouseY < height-50) && (screenSelector == 8) && (mousePressed)) {
+  //  screenSelector = 9;
+  //} 
+  else if((mouseX > 0) && (mouseY > 45) && (mouseX < width) && (mouseY < 220) && (screenSelector == 9) && (mousePressed)) {
     screenSelector = 10;
+  } else if((mouseX > width-1100) && (mouseY > height-350) && (mouseX < width-100) && (mouseY < height-50) && (screenSelector == 4) && (mousePressed)) {
+    screenSelector = 8;
+  } else if ((mouseX > width-1460) && (mouseY > 1490) && (mouseX < width-500) && (mouseY < 2000) && (screenSelector == 8) && (mousePressed)) {
+    screenSelector = 9;
+  } else if ((mouseX > width-1460) && (mouseY > 750) && (mouseX < width-500) && (mouseY < 1290) && (screenSelector == 8) && (mousePressed)) {
+    screenSelector = 9;
+  } else if ((mouseX > 500) && (mouseY > 1490) && (mouseX < 1460) && (mouseY < 2000) && (screenSelector == 8) && (mousePressed)) {
+    screenSelector = 9;
+  } else if ((mouseX > 500) && (mouseY > 750) && (mouseX < 1460) && (mouseY < 1290) && (screenSelector == 8) && (mousePressed)) {
+    screenSelector = 9;
   }
-   else if ( sound1.isPlaying() ) {
-      sound1.pause();
-    } else {
-    // simply call loop again to resume playing from where it was paused
-      sound1.loop();
-      for(int i = 0; i < sound1.bufferSize() - 1; i++) {
-        line(i, 50  + sound1.left.get(i)*50,  i+1, 50  + sound1.left.get(i+1)*50);
-        line(i, 150 + sound1.right.get(i)*50, i+1, 150 + sound1.right.get(i+1)*50);
-      }
-    }
   
   if ((key == 'r' || key == 'R') && (screenSelector == 2)) {
     if ((finalRecorder.isRecording()) &&  (in.isMonitoring())) {
