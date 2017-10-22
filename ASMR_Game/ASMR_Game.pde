@@ -63,44 +63,18 @@ void setup() {
   play = loadImage("play.png");
   play0 = loadImage("play0.png");
   intro1 = new Movie(this, "intro1.mp4");
-  intro1.loop();
-  intro1.volume(0);
   intro2 = new Movie(this, "intro2.mp4");
-  intro2.loop();
-  intro2.volume(0);
   intro3 = new Movie(this, "intro3.mp4");
-  intro3.loop();
-  intro3.volume(0);
   intro4 = new Movie(this, "intro4.mp4");
-  intro4.loop();
-  intro4.volume(0);
   outro1 = new Movie(this, "outro1.mp4");
-  outro1.loop();
-  outro1.volume(0);
   outro2 = new Movie(this, "outro2.mp4");
-  outro2.loop();
-  outro2.volume(0);
   outro3 = new Movie(this, "outro3.mp4");
-  outro3.loop();
-  outro3.volume(0);
   outro4 = new Movie(this, "outro4.mp4");
-  outro4.loop();
-  outro4.volume(0);
   asmr = new Movie(this, "asmr.mp4");
-  //asmr.loop();
-  //asmr.volume(0);
   hand  = new Movie(this, "hands.mp4");
-  hand.loop();
-  hand.volume(0);
   tap  = new Movie(this, "tapping.mp4");
-  tap.loop();
-  tap.volume(0);
   page  = new Movie(this, "pageTurn.mp4");
-  page.loop();
-  page.volume(0);
   type  = new Movie(this, "typing.mp4");
-  type.loop();
-  type.volume(0);
   
   String[] cameras = Capture.list();
   
@@ -131,7 +105,7 @@ void setup() {
 void draw() {
   //title
   textFont(titleFont);
-  //generatePastelColor();
+  generatePastelColor();
   textAlign(CENTER);
   text("Becoming an", width/2, height/2-400);
   text("ASMRtist", width/2, height/2+75);
@@ -224,14 +198,19 @@ void introScreen() {
    //videos
    if (screenSelector == 2) {
   image(intro1, 500, 750, 960, 540);
+  intro1.loop();
   image(intro2, width-1460, 750, 960, 540);
+    intro2.loop();
   image(intro3, 500, 1490, 960, 540);
+  intro3.loop();
   image(intro4, width-1460, 1490, 960, 540);
+    intro4.loop();
    } else {
      intro1.volume(0);
      intro2.volume(0);
      intro3.volume(0);
      intro4.volume(0);
+   }
   
   if ((mouseX > 500) && (mouseY > 750) && (mouseX < 1460) && (mouseY < 1290) && (screenSelector == 2)) {
     fill(255, 255, 255, 75);
@@ -279,11 +258,14 @@ void introScreen() {
     intro3.volume(0);
     intro4.volume(0);
     }
-  }
 }
 
 void visualScreen() {
   background(255);
+  intro1.volume(0);
+     intro2.volume(0);
+     intro3.volume(0);
+     intro4.volume(0);
   
   generateDarkPastelStroke();
   fill(255, 193, 218);
@@ -298,9 +280,13 @@ void visualScreen() {
   //videos
   if (screenSelector == 3) {
   image(hand, 500, 750, 960, 540);
+   hand.loop();
   image(tap, width-1460, 750, 960, 540);
+  tap.loop();
   image(page, 500, 1490, 960, 540);
+  page.loop();
   image(type, width-1460, 1490, 960, 540);
+  type.loop();
   } else {
     hand.volume(0);
     tap.volume(0);
@@ -358,6 +344,10 @@ void visualScreen() {
 
 void contentScreen() {
   background(255);
+  hand.volume(0);
+    tap.volume(0);
+    page.volume(0);
+    type.volume(0);
   
   generateDarkPastelStroke();
   fill(255, 193, 218);
@@ -457,6 +447,11 @@ void contentScreen() {
 }
 
 void outroScreen() {
+  sound1.pause();
+  sound2.pause();
+  sound3.pause();
+  sound4.pause();
+  sound5.pause();
   background(255);
   
   generateDarkPastelStroke();
@@ -470,11 +465,15 @@ void outroScreen() {
   text("Say goodbye and farewell.", 45, 500, width-90, height-500);
   
    //videos
-   if (screenSelector == 8){
+    if (screenSelector == 8){
      image(outro1, 500, 750, 960, 540);
+     outro1.loop();
      image(outro2, width-1460, 750, 960, 540);
+     outro2.loop();
      image(outro3, 500, 1490, 960, 540);
+     outro3.loop();
      image(outro4, width-1460, 1490, 960, 540);
+     outro4.loop();
    } else {
     outro1.volume(0);
     outro2.volume(0);
@@ -531,6 +530,10 @@ void outroScreen() {
 }
 
 void videoScreen() {
+  outro1.volume(0);
+    outro2.volume(0);
+    outro3.volume(0);
+    outro4.volume(0);
   background(0);
   
   stroke(255, 193, 218);
@@ -571,7 +574,7 @@ void videoScreen() {
   // without any additional resizing, transformations, or tint.
   //set(0, 0, cam);
   
-  if((mouseX > 0) && (mouseY > 45) && (mouseX < width) && (mouseY < 220) && (screenSelector == 9)) {
+  if((mouseX > 0) && (mouseY > 150) && (mouseX < width) && (mouseY < 400) && (screenSelector == 9)) {
       generatePastelStroke();
           tint(100, 209, 239);
     fill(255, 193, 218);
@@ -670,10 +673,13 @@ void mouseReleased() {
     screenSelector = 3;
   } else if ((mouseX > 500) && (mouseY > 750) && (mouseX < 1460) && (mouseY < 1290) && (screenSelector == 3) && (mousePressed)) {
     screenSelector = 4;
-  }// else if((mouseX > width-1500) && (mouseY > height-350) && (mouseX < width) && (mouseY < height-50) && (screenSelector == 8) && (mousePressed)) {
-  //  screenSelector = 9;
-  //} 
-  else if((mouseX > 0) && (mouseY > 45) && (mouseX < width) && (mouseY < 220) && (screenSelector == 9) && (mousePressed)) {
+  } else if ((mouseX > width-1460) && (mouseY > 750) && (mouseX < width-500) && (mouseY < 1290) && (screenSelector == 3) && (mousePressed)) {
+    screenSelector = 4;
+  } else if ((mouseX > 500) && (mouseY > 1490) && (mouseX < 1460) && (mouseY < 2000) && (screenSelector == 3) && (mousePressed)) {
+    screenSelector = 4;
+  } else if ((mouseX > width-1460) && (mouseY > 1490) && (mouseX < width-500) && (mouseY < 2000) && (screenSelector == 3) && (mousePressed)) {
+    screenSelector = 4;
+  } else if ((mouseX > 0) && (mouseY > 150) && (mouseX < width) && (mouseY < 400) && (screenSelector == 9) && (mousePressed)) {
     screenSelector = 10;
   } else if((mouseX > width-1100) && (mouseY > height-350) && (mouseX < width-100) && (mouseY < height-50) && (screenSelector == 4) && (mousePressed)) {
     screenSelector = 8;
